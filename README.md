@@ -44,3 +44,7 @@ echo "feat: example change" | pnpm exec commitlint
 ## Tech stack
 
 Next.js (App Router), TypeScript, Tailwind CSS, ESLint, Prettier, Commitlint, Husky, lint-staged.
+
+## Coach MVP (mock data)
+
+The home route is a **coach dashboard** (BETTER design language: Poppins, brand colors, squarcle cards). Batch / group selectors, KPI tiles, 7-day log-rate chart (Recharts), and a roster with WhatsApp deep links use **mock data** in `src/lib/coach/` until a real API exists.
