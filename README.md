@@ -15,6 +15,8 @@ pnpm dev      # http://localhost:3000
 pnpm build
 pnpm start
 pnpm lint
+pnpm format
+pnpm format:check
 ```
 
 ## Tech stack
