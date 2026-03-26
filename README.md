@@ -20,6 +20,12 @@ pnpm format
 pnpm format:check
 ```
 
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (enforced via Husky in a later setup). Check a message locally:
+
+```bash
+echo "feat: example change" | pnpm exec commitlint
+```
+
 ## Tech stack
 
-Next.js (App Router), TypeScript, Tailwind CSS, ESLint, Prettier.
+Next.js (App Router), TypeScript, Tailwind CSS, ESLint, Prettier, Commitlint.
