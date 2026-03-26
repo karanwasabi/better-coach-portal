@@ -15,10 +15,11 @@ pnpm dev      # http://localhost:3000
 pnpm build
 pnpm start
 pnpm lint
+pnpm lint:fix
 pnpm format
 pnpm format:check
 ```
 
 ## Tech stack
 
-Next.js (App Router), TypeScript, Tailwind CSS, ESLint.
+Next.js (App Router), TypeScript, Tailwind CSS, ESLint, Prettier.
