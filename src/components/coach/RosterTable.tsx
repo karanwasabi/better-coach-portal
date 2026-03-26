@@ -1,11 +1,17 @@
 "use client";
 
+import { useMemo } from "react";
 import { Check, MessageCircle, Minus } from "lucide-react";
 import type { Student } from "@/lib/coach/types";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
 export function RosterTable({ students }: { students: Student[] }) {
+  const rows = useMemo(
+    () => [...students].sort((a, b) => a.name.localeCompare(b.name)),
+    [students],
+  );
+
   return (
     <div className="rounded-[2rem] border-b-[6px] border-slate-200/80 bg-white/90 px-4 py-6 shadow-xl shadow-slate-200/60 backdrop-blur-sm sm:px-8">
       <div className="mb-6">
@@ -32,7 +38,7 @@ export function RosterTable({ students }: { students: Student[] }) {
             </tr>
           </thead>
           <tbody>
-            {students.map((s) => (
+            {rows.map((s) => (
               <tr
                 key={s.id}
                 className="border-b border-slate-100 last:border-b-0 hover:bg-violet-50/40"
@@ -84,7 +90,7 @@ export function RosterTable({ students }: { students: Student[] }) {
           </tbody>
         </table>
       </div>
-      {students.length === 0 ? (
+      {rows.length === 0 ? (
         <p className="mt-4 text-center text-sm text-slate-500">
           No students in this batch and group yet.
         </p>

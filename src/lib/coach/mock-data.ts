@@ -34,11 +34,16 @@ const NAMES = [
   "Jade Williams",
   "Kenji Morita",
   "Lina Haddad",
+  "Marcus Chen",
+  "Nour Al-Farsi",
+  "Priya Desai",
+  "Quinn O’Brien",
 ];
 
+/** Eight per batch: indices 0–7 Jan, 8–15 Dec. Alternating A/B. */
 export const MOCK_STUDENTS: Student[] = NAMES.map((name, i) => {
   const id = `stu-${i + 1}`;
-  const batchId = i < 9 ? "jan-2026" : "dec-2025";
+  const batchId = i < 8 ? "jan-2026" : "dec-2025";
   const group = i % 2 === 0 ? "A" : "B";
   const weekLogged = weekPattern(id, i);
   const loggedToday =
@@ -66,7 +71,7 @@ export function filterStudents(batchId: string, group: GroupId): Student[] {
 
 export function engagementTrend(
   batchId: string,
-  group: string,
+  group: GroupId,
 ): EngagementDay[] {
   const shift = Math.round(hash01(`${batchId}-${group}`) * 6);
   const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

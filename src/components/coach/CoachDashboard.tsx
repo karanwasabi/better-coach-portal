@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import {
   MOCK_BATCHES,
@@ -66,21 +68,28 @@ function SquarcleSelect({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-w-[10rem] flex-col gap-1.5">
+    <div className="flex min-w-[11rem] flex-col gap-1.5">
       <label
         htmlFor={id}
         className="text-[10px] font-bold uppercase tracking-widest text-slate-500"
       >
         {label}
       </label>
-      <select
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="appearance-none rounded-2xl border-2 border-slate-100 bg-white/90 px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm outline-none transition hover:border-violet-200 focus:border-[#5C65CF] focus:ring-2 focus:ring-[#5C65CF]/25"
-      >
-        {children}
-      </select>
+      <div className="relative">
+        <select
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full cursor-pointer appearance-none rounded-2xl border-2 border-slate-100 bg-white/90 py-3 pl-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition hover:border-violet-200 focus:border-[#5C65CF] focus:ring-2 focus:ring-[#5C65CF]/25"
+        >
+          {children}
+        </select>
+        <ChevronDown
+          aria-hidden
+          className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#5C65CF]/70"
+          strokeWidth={2.5}
+        />
+      </div>
     </div>
   );
 }
@@ -129,16 +138,28 @@ export function CoachDashboard() {
     <div className="min-h-screen pb-16">
       <header className="border-b border-white/50 bg-white/40 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-end sm:justify-between sm:px-8">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[#5C65CF]">
-              SBM Better
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-800 sm:text-[1.85rem]">
-              Coach dashboard
-            </h1>
-            <p className="mt-2 max-w-xl text-sm font-medium text-slate-600">
-              Program week {weekNumber} · {phaseLabel} phase
-            </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+            <div className="relative h-9 w-[140px] shrink-0 sm:h-10 sm:w-[156px]">
+              <Image
+                src="/better-logo.svg"
+                alt="BETTER"
+                fill
+                className="object-contain object-left"
+                priority
+                sizes="156px"
+              />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[#5C65CF]">
+                Coach tools
+              </p>
+              <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-800 sm:text-[1.85rem]">
+                Your batch pulse
+              </h1>
+              <p className="mt-2 max-w-xl text-sm font-medium text-slate-600">
+                Program week {weekNumber} · {phaseLabel} phase
+              </p>
+            </div>
           </div>
           <div className="flex flex-wrap items-end gap-4">
             <SquarcleSelect
@@ -194,6 +215,12 @@ export function CoachDashboard() {
 
         <RosterTable students={students} />
       </main>
+
+      <footer className="mx-auto mt-4 max-w-6xl px-5 pb-10 sm:px-8">
+        <div className="rounded-[1.75rem] border border-dashed border-slate-200/90 bg-white/50 px-5 py-4 text-center text-xs font-medium text-slate-500">
+          Showing mock cohort data — plug in live feeds when you&apos;re ready.
+        </div>
+      </footer>
     </div>
   );
 }
