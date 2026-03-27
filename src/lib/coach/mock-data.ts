@@ -92,11 +92,41 @@ export function filterStudents(batchId: string, group: GroupId): Student[] {
   );
 }
 
+/**
+ * Recomputes week log indicators and today's status for a selected week.
+ * This keeps the dashboard interactive when coaches switch week context.
+ */
+export function projectStudentsForWeek(
+  students: Student[],
+  week: number,
+): Student[] {
+  const safeWeek = Math.min(12, Math.max(1, week));
+  return students.map((s, i) => {
+    const weekLogged = Array.from({ length: 7 }, (_, day) => {
+      const r = hash01(`${s.id}-w${safeWeek}-d${day}`);
+      return r > 0.3;
+    });
+    const loggedToday = weekLogged[6] ?? false;
+    const contextualThreshold = s.group === "A" ? 0.42 : 0.47;
+    const contextualMetToday =
+      loggedToday &&
+      hash01(`${s.id}-ctx-w${safeWeek}-${i}`) > contextualThreshold;
+
+    return {
+      ...s,
+      loggedToday,
+      weekLogged,
+      contextualMetToday,
+    };
+  });
+}
+
 export function engagementTrend(
   batchId: string,
   group: GroupId,
+  week: number,
 ): EngagementDay[] {
-  const shift = Math.round(hash01(`${batchId}-${group}`) * 6);
+  const shift = Math.round(hash01(`${batchId}-${group}-w${week}`) * 6);
   const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   return labels.map((label, i) => ({
     label,

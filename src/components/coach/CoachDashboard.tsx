@@ -7,6 +7,7 @@ import {
   MOCK_BATCHES,
   engagementTrend,
   filterStudents,
+  projectStudentsForWeek,
 } from "@/lib/coach/mock-data";
 import {
   contextualTileCopy,
@@ -100,12 +101,14 @@ export function CoachDashboard() {
 
   const batch = MOCK_BATCHES.find((b) => b.id === batchId) ?? MOCK_BATCHES[0]!;
 
-  const weekNumber = useMemo(() => {
+  const currentWeek = useMemo(() => {
     const start = new Date(`${batch.startMonday}T12:00:00.000Z`);
     return getWeekNumber(start, new Date());
   }, [batch.startMonday]);
+  const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
+  const viewingWeek = selectedWeek ?? currentWeek;
 
-  const phase = getWeekPhase(weekNumber);
+  const phase = getWeekPhase(viewingWeek);
   const contextual = contextualTileCopy(phase);
   const phaseLabel =
     phase === "build"
@@ -114,17 +117,21 @@ export function CoachDashboard() {
         ? "Implementation"
         : "Challenge";
 
-  const students = useMemo(
+  const baseStudents = useMemo(
     () => filterStudents(batchId, group),
     [batchId, group],
+  );
+  const students = useMemo(
+    () => projectStudentsForWeek(baseStudents, viewingWeek),
+    [baseStudents, viewingWeek],
   );
 
   const total = students.length;
   const logRate = percentLoggedToday(students);
   const contextualRate = percentContextualAmongLogged(students);
   const trend = useMemo(
-    () => engagementTrend(batchId, group),
-    [batchId, group],
+    () => engagementTrend(batchId, group, viewingWeek),
+    [batchId, group, viewingWeek],
   );
 
   const thirdAccent =
@@ -157,7 +164,7 @@ export function CoachDashboard() {
                 Your batch pulse
               </h1>
               <p className="mt-2 max-w-xl text-sm font-medium text-slate-600">
-                Program week {weekNumber} · {phaseLabel} phase
+                Program week {viewingWeek} · {phaseLabel} phase
               </p>
             </div>
           </div>
@@ -166,7 +173,10 @@ export function CoachDashboard() {
               id="batch"
               label="Batch"
               value={batchId}
-              onChange={setBatchId}
+              onChange={(v) => {
+                setBatchId(v);
+                setSelectedWeek(null);
+              }}
             >
               {MOCK_BATCHES.map((b) => (
                 <option key={b.id} value={b.id}>
@@ -182,6 +192,18 @@ export function CoachDashboard() {
             >
               <option value="A">Group A</option>
               <option value="B">Group B</option>
+            </SquarcleSelect>
+            <SquarcleSelect
+              id="week"
+              label="Week"
+              value={String(viewingWeek)}
+              onChange={(v) => setSelectedWeek(Number(v))}
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i + 1} value={String(i + 1)}>
+                  Week {i + 1}
+                </option>
+              ))}
             </SquarcleSelect>
           </div>
         </div>
