@@ -69,7 +69,7 @@ function SquarcleSelect({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-w-[11rem] flex-col gap-1.5">
+    <div className="flex w-full min-w-0 flex-col gap-1.5 sm:min-w-[10.5rem]">
       <label
         htmlFor={id}
         className="text-[10px] font-bold uppercase tracking-widest text-slate-500"
@@ -151,7 +151,7 @@ export function CoachDashboard() {
     <div className="min-h-screen pb-16">
       <header className="border-b border-white/50 bg-white/40 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-end sm:justify-between sm:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
             <div className="relative h-12 w-[190px] shrink-0 sm:h-14 sm:w-[230px]">
               <Image
                 src="/better-logo.svg"
@@ -174,7 +174,7 @@ export function CoachDashboard() {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-end gap-4">
+          <div className="grid w-full grid-cols-1 gap-3 sm:w-auto sm:grid-cols-3 sm:items-end sm:gap-4">
             <SquarcleSelect
               id="batch"
               label="Batch"
