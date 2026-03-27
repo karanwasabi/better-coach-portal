@@ -1,12 +1,12 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { EngagementDay } from "@/lib/coach/types";
 import {
   Area,
   ComposedChart,
   CartesianGrid,
   Line,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -29,6 +29,23 @@ function HollowDot(props: { cx?: number; cy?: number; stroke?: string }) {
 }
 
 export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [chartWidth, setChartWidth] = useState(0);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const el = wrapperRef.current;
+    const updateWidth = () => {
+      const next = Math.floor(el.getBoundingClientRect().width);
+      if (next > 0) setChartWidth(next);
+    };
+
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="rounded-[2rem] border-b-[6px] border-[#4149AA]/35 bg-white/85 px-4 py-6 shadow-xl shadow-[#5C65CF]/15 backdrop-blur-sm sm:px-8">
       <div className="mb-6 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
@@ -44,10 +61,12 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
           Daily log rate · last 7 days
         </p>
       </div>
-      <div className="h-[260px] w-full min-w-0">
-        <ResponsiveContainer width="100%" height="100%">
+      <div ref={wrapperRef} className="h-[260px] w-full min-w-0">
+        {chartWidth > 0 ? (
           <ComposedChart
             data={data}
+            width={chartWidth}
+            height={260}
             margin={{ top: 8, right: 8, left: -18, bottom: 4 }}
           >
             <defs>
@@ -105,7 +124,9 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
               isAnimationActive={false}
             />
           </ComposedChart>
-        </ResponsiveContainer>
+        ) : (
+          <div className="h-[260px] w-full rounded-2xl bg-slate-100/70" />
+        )}
       </div>
     </div>
   );
