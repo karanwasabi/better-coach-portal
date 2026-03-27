@@ -1,8 +1,8 @@
 import type { Batch, EngagementDay, GroupId, Student } from "./types";
 
 export const MOCK_BATCHES: Batch[] = [
-  { id: "jan-2026", label: "Batch Jan 2026", startMonday: "2026-01-05" },
-  { id: "dec-2025", label: "Batch Dec 2025", startMonday: "2025-12-01" },
+  { id: "apr-2026", label: "April 2026", startMonday: "2026-04-06" },
+  { id: "jul-2026", label: "July 2026", startMonday: "2026-07-06" },
 ];
 
 /** Deterministic pseudo-random 0..1 from string id */
@@ -77,7 +77,7 @@ const NAMES = [
 /** Indices 0–19 → Jan 2026; 20–39 → Dec 2025. Even → Group A, odd → Group B. */
 export const MOCK_STUDENTS: Student[] = NAMES.map((name, i) => {
   const id = `stu-${i + 1}`;
-  const batchId = i < 20 ? "jan-2026" : "dec-2025";
+  const batchId = i < 20 ? "apr-2026" : "jul-2026";
   const group = i % 2 === 0 ? "A" : "B";
   const weekLogged = weekPattern(id, i);
   const loggedToday =

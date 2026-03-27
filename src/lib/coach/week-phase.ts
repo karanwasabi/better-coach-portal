@@ -27,17 +27,17 @@ export function contextualTileCopy(phase: WeekPhase): {
     case "build":
       return {
         title: "Action completion",
-        description: "% of logging students who hit “Yes” on today’s action",
+        description: "Members who completed today’s action",
       };
     case "quiet":
       return {
         title: "Habit adherence",
-        description: "% of logging students meeting baseline habits in play",
+        description: "Members who completed baseline habits",
       };
     case "challenge":
       return {
         title: "Challenge success",
-        description: "% of logging students between floor & ceiling today",
+        description: "Members who scored between floor & ceiling today",
       };
   }
 }

@@ -192,14 +192,14 @@ export function CoachDashboard() {
           <KpiCard
             label="Total students"
             value={total}
-            hint="Active learners in this batch & group"
+            hint="Active members in this batch & group"
             accentClass="from-[#5C65CF] via-[#6A71E6] to-[#4750C2] border-[#4149AA]"
           />
           <KpiCard
             label="Tonight's log rate"
             value={logRate}
             suffix="%"
-            hint="% who finished their 20-second nightly log"
+            hint="Members who logged their effort today"
             accentClass="from-[#FF9F1C] via-[#FFB347] to-[#E88A0C] border-[#C2740E]"
           />
           <KpiCard
