@@ -139,14 +139,14 @@ export function CoachDashboard() {
       <header className="border-b border-white/50 bg-white/40 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-end sm:justify-between sm:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-            <div className="relative h-9 w-[140px] shrink-0 sm:h-10 sm:w-[156px]">
+            <div className="relative h-12 w-[190px] shrink-0 sm:h-14 sm:w-[230px]">
               <Image
                 src="/better-logo.svg"
                 alt="BETTER"
                 fill
                 className="object-contain object-left"
                 priority
-                sizes="156px"
+                sizes="(min-width: 640px) 230px, 190px"
               />
             </div>
             <div>
