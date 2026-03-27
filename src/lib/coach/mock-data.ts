@@ -21,42 +21,77 @@ function weekPattern(studentId: string, offset: number): boolean[] {
   });
 }
 
+/** Fictional IN-style numbers for demos: 91 + 10 digits beginning with 01555… */
+function fakeWhatsappNational10(index: number, studentId: string): string {
+  const n =
+    (index * 104_729 + Math.floor(hash01(`${studentId}-wa`) * 100_000)) %
+    100_000;
+  const tail = String(10_000 + n).slice(-5);
+  return `01555${tail}`;
+}
+
+/** Indian names — 40 students so each batch × group has exactly 10. */
 const NAMES = [
-  "Aisha Rahman",
-  "Ben Okonkwo",
-  "Chloe Mercer",
-  "Diego Vasquez",
-  "Elena Vogel",
-  "Farah Nassar",
-  "Gabriel Santos",
-  "Hannah Lee",
-  "Ivan Petrov",
-  "Jade Williams",
-  "Kenji Morita",
-  "Lina Haddad",
-  "Marcus Chen",
-  "Nour Al-Farsi",
-  "Priya Desai",
-  "Quinn O’Brien",
+  "Aarav Sharma",
+  "Ananya Iyer",
+  "Vikram Reddy",
+  "Priya Menon",
+  "Rohan Patel",
+  "Kavya Nair",
+  "Arjun Singh",
+  "Diya Kapoor",
+  "Siddharth Joshi",
+  "Meera Krishnan",
+  "Karan Mehta",
+  "Sanya Gupta",
+  "Aditya Rao",
+  "Riya Choudhury",
+  "Nikhil Verma",
+  "Ishita Das",
+  "Rahul Malhotra",
+  "Pooja Agarwal",
+  "Varun Khanna",
+  "Neha Bose",
+  "Kunal Shah",
+  "Tanvi Deshmukh",
+  "Manish Pillai",
+  "Shruti Srinivasan",
+  "Dev Chatterjee",
+  "Anjali Banerjee",
+  "Sameer Khan",
+  "Lakshmi Subramanian",
+  "Harsh Thakur",
+  "Swati Mishra",
+  "Suresh Venkatesh",
+  "Kavitha Raman",
+  "Girish Nambiar",
+  "Deepa Sundaram",
+  "Rajesh Iyengar",
+  "Fatima Sheikh",
+  "Imran Qureshi",
+  "Sanjay Dubey",
+  "Rekha Tiwari",
+  "Amitabh Bandyopadhyay",
 ];
 
-/** Eight per batch: indices 0–7 Jan, 8–15 Dec. Alternating A/B. */
+/** Indices 0–19 → Jan 2026; 20–39 → Dec 2025. Even → Group A, odd → Group B. */
 export const MOCK_STUDENTS: Student[] = NAMES.map((name, i) => {
   const id = `stu-${i + 1}`;
-  const batchId = i < 8 ? "jan-2026" : "dec-2025";
+  const batchId = i < 20 ? "jan-2026" : "dec-2025";
   const group = i % 2 === 0 ? "A" : "B";
   const weekLogged = weekPattern(id, i);
   const loggedToday =
     weekLogged[weekLogged.length - 1] ?? hash01(`${id}-today`) > 0.35;
   const contextualMetToday =
     loggedToday && hash01(`${id}-ctx`) > (group === "A" ? 0.4 : 0.45);
+  const national10 = fakeWhatsappNational10(i, id);
 
   return {
     id,
     name,
     batchId,
     group,
-    whatsappDigits: `447700900${String(100 + i).slice(-3)}`,
+    whatsappDigits: `91${national10}`,
     loggedToday,
     weekLogged: weekLogged.map((v, j) => (j === 6 ? loggedToday : v)),
     contextualMetToday,

@@ -215,12 +215,6 @@ export function CoachDashboard() {
 
         <RosterTable students={students} />
       </main>
-
-      <footer className="mx-auto mt-4 max-w-6xl px-5 pb-10 sm:px-8">
-        <div className="rounded-[1.75rem] border border-dashed border-slate-200/90 bg-white/50 px-5 py-4 text-center text-xs font-medium text-slate-500">
-          Showing mock cohort data — plug in live feeds when you&apos;re ready.
-        </div>
-      </footer>
     </div>
   );
 }
