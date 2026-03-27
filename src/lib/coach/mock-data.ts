@@ -21,15 +21,6 @@ function weekPattern(studentId: string, offset: number): boolean[] {
   });
 }
 
-/** Fictional IN-style numbers for demos: 91 + 10 digits beginning with 01555… */
-function fakeWhatsappNational10(index: number, studentId: string): string {
-  const n =
-    (index * 104_729 + Math.floor(hash01(`${studentId}-wa`) * 100_000)) %
-    100_000;
-  const tail = String(10_000 + n).slice(-5);
-  return `01555${tail}`;
-}
-
 /** Indian names — 40 students so each batch × group has exactly 10. */
 const NAMES = [
   "Aarav Sharma",
@@ -84,14 +75,11 @@ export const MOCK_STUDENTS: Student[] = NAMES.map((name, i) => {
     weekLogged[weekLogged.length - 1] ?? hash01(`${id}-today`) > 0.35;
   const contextualMetToday =
     loggedToday && hash01(`${id}-ctx`) > (group === "A" ? 0.4 : 0.45);
-  const national10 = fakeWhatsappNational10(i, id);
-
   return {
     id,
     name,
     batchId,
     group,
-    whatsappDigits: `91${national10}`,
     loggedToday,
     weekLogged: weekLogged.map((v, j) => (j === 6 ? loggedToday : v)),
     contextualMetToday,

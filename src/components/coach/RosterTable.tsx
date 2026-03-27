@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Check, MessageCircle, Minus } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import type { Student } from "@/lib/coach/types";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
@@ -23,17 +23,14 @@ export function RosterTable({ students }: { students: Student[] }) {
         </h2>
       </div>
       <div className="overflow-x-auto rounded-2xl border border-slate-100">
-        <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+        <table className="w-full min-w-[560px] border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50/90">
               <th className="rounded-tl-2xl px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">
                 Student
               </th>
-              <th className="px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">
-                This week
-              </th>
               <th className="rounded-tr-2xl px-4 py-3 text-xs font-bold uppercase tracking-wider text-slate-500">
-                Nudge
+                This week
               </th>
             </tr>
           </thead>
@@ -73,17 +70,6 @@ export function RosterTable({ students }: { students: Student[] }) {
                       </div>
                     ))}
                   </div>
-                </td>
-                <td className="px-4 py-4">
-                  <a
-                    href={`https://wa.me/${s.whatsappDigits}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-[1.25rem] border-b-[4px] border-[#128C7E] bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-600/25 transition hover:brightness-105 active:translate-y-0.5 active:border-b-[2px]"
-                  >
-                    <MessageCircle className="h-4 w-4" strokeWidth={2} />
-                    WhatsApp
-                  </a>
                 </td>
               </tr>
             ))}

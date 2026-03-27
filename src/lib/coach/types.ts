@@ -14,8 +14,6 @@ export interface Student {
   name: string;
   batchId: string;
   group: GroupId;
-  /** E.164 digits only (no +) for wa.me */
-  whatsappDigits: string;
   loggedToday: boolean;
   /** Index 0 = Monday … 6 = Sunday for the roster row */
   weekLogged: boolean[];
