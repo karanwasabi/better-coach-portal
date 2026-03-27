@@ -28,7 +28,34 @@ function HollowDot(props: { cx?: number; cy?: number; stroke?: string }) {
   );
 }
 
-export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
+function TrendTooltip({
+  active,
+  payload,
+}: {
+  active?: boolean;
+  payload?: Array<{ payload?: EngagementDay }>;
+}) {
+  if (!active || !payload?.length || !payload[0]?.payload) return null;
+  const row = payload[0].payload;
+  return (
+    <div className="rounded-2xl bg-white px-4 py-2.5 shadow-xl shadow-[#5C65CF]/20">
+      <p className="text-[11px] font-semibold text-slate-600">
+        {row.fullDateLabel}
+      </p>
+      <p className="mt-1 text-sm font-bold text-slate-800">
+        {row.rate}% log rate
+      </p>
+    </div>
+  );
+}
+
+export function EngagementTrendChart({
+  data,
+  subtitle,
+}: {
+  data: EngagementDay[];
+  subtitle: string;
+}) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [chartWidth, setChartWidth] = useState(0);
 
@@ -57,9 +84,7 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
             7-day engagement
           </h2>
         </div>
-        <p className="text-xs font-medium text-slate-500">
-          Daily log rate · last 7 days
-        </p>
+        <p className="text-xs font-medium text-slate-500">{subtitle}</p>
       </div>
       <div ref={wrapperRef} className="h-[260px] w-full min-w-0">
         {chartWidth > 0 ? (
@@ -67,7 +92,7 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
             data={data}
             width={chartWidth}
             height={260}
-            margin={{ top: 8, right: 8, left: -18, bottom: 4 }}
+            margin={{ top: 8, right: 8, left: 8, bottom: 4 }}
           >
             <defs>
               <linearGradient id="engagementFill" x1="0" y1="0" x2="0" y2="1">
@@ -81,7 +106,7 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
               vertical={false}
             />
             <XAxis
-              dataKey="label"
+              dataKey="dateLabel"
               tick={{ fill: "#64748b", fontSize: 12, fontWeight: 500 }}
               axisLine={false}
               tickLine={false}
@@ -89,23 +114,16 @@ export function EngagementTrendChart({ data }: { data: EngagementDay[] }) {
             />
             <YAxis
               domain={[0, 100]}
-              width={36}
+              width={44}
               tickFormatter={(v) => `${v}%`}
               tick={{ fill: "#94a3b8", fontSize: 11 }}
               axisLine={false}
               tickLine={false}
+              tickMargin={8}
             />
             <Tooltip
               cursor={{ stroke: BRAND, strokeWidth: 1, strokeDasharray: "4 4" }}
-              contentStyle={{
-                borderRadius: 16,
-                border: "none",
-                boxShadow: "0 12px 40px rgb(92 101 207 / 0.2)",
-              }}
-              formatter={(value) => [
-                `${typeof value === "number" ? value : Number(value) || 0}%`,
-                "Log rate",
-              ]}
+              content={<TrendTooltip />}
             />
             <Area
               type="monotone"

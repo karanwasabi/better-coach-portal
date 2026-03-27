@@ -22,6 +22,10 @@ export interface Student {
 }
 
 export interface EngagementDay {
+  /** Short date for x-axis, e.g. 13 Apr */
+  dateLabel: string;
+  /** Full date for tooltip, e.g. Mon, 13 Apr 2026 */
+  fullDateLabel: string;
   label: string;
   rate: number;
 }

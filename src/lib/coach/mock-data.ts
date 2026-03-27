@@ -1,7 +1,7 @@
 import type { Batch, EngagementDay, GroupId, Student } from "./types";
 
 export const MOCK_BATCHES: Batch[] = [
-  { id: "apr-2026", label: "April 2026", startMonday: "2026-04-06" },
+  { id: "apr-2026", label: "April 2026", startMonday: "2026-04-13" },
   { id: "jul-2026", label: "July 2026", startMonday: "2026-07-06" },
 ];
 
@@ -125,13 +125,37 @@ export function engagementTrend(
   batchId: string,
   group: GroupId,
   week: number,
+  batchStartMonday: string,
 ): EngagementDay[] {
   const shift = Math.round(hash01(`${batchId}-${group}-w${week}`) * 6);
-  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  return labels.map((label, i) => ({
-    label,
-    rate: Math.round(
-      55 + 38 * Math.sin((i + shift) / 1.2) + (i === 5 ? -12 : 0) + i * 2,
-    ),
-  }));
+  const start = new Date(`${batchStartMonday}T00:00:00.000Z`);
+  const weekStart = new Date(start.getTime() + (week - 1) * 7 * 86400000);
+  const weekdayFmt = new Intl.DateTimeFormat("en-IN", {
+    weekday: "short",
+    timeZone: "UTC",
+  });
+  const shortDateFmt = new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    timeZone: "UTC",
+  });
+  const fullDateFmt = new Intl.DateTimeFormat("en-IN", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = new Date(weekStart.getTime() + i * 86400000);
+    return {
+      label: weekdayFmt.format(day),
+      dateLabel: shortDateFmt.format(day),
+      fullDateLabel: fullDateFmt.format(day),
+      rate: Math.round(
+        55 + 38 * Math.sin((i + shift) / 1.2) + (i === 5 ? -12 : 0) + i * 2,
+      ),
+    };
+  });
 }

@@ -130,9 +130,15 @@ export function CoachDashboard() {
   const logRate = percentLoggedToday(students);
   const contextualRate = percentContextualAmongLogged(students);
   const trend = useMemo(
-    () => engagementTrend(batchId, group, viewingWeek),
-    [batchId, group, viewingWeek],
+    () => engagementTrend(batchId, group, viewingWeek, batch.startMonday),
+    [batchId, group, viewingWeek, batch.startMonday],
   );
+  const dateRangeLabel = useMemo(() => {
+    if (trend.length === 0) return "";
+    const start = trend[0]!.dateLabel;
+    const end = trend[trend.length - 1]!.dateLabel;
+    return `${start} to ${end}`;
+  }, [trend]);
 
   const thirdAccent =
     phase === "build"
@@ -233,7 +239,10 @@ export function CoachDashboard() {
           />
         </section>
 
-        <EngagementTrendChart data={trend} />
+        <EngagementTrendChart
+          data={trend}
+          subtitle={`Daily log rate · ${dateRangeLabel}`}
+        />
 
         <RosterTable students={students} />
       </main>
