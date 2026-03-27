@@ -45,6 +45,12 @@ body {
       transparent 45%
     ),
     var(--sbm-canvas-warm);
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    auto;
   color: var(--foreground);
   font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
