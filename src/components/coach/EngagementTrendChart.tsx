@@ -43,7 +43,7 @@ function TrendTooltip({
         {row.fullDateLabel}
       </p>
       <p className="mt-1 text-sm font-bold text-slate-800">
-        {row.rate}% log rate
+        {row.rate}% check-in rate
       </p>
     </div>
   );

@@ -70,18 +70,18 @@ export const MOCK_STUDENTS: Student[] = NAMES.map((name, i) => {
   const id = `stu-${i + 1}`;
   const batchId = i < 20 ? "apr-2026" : "jul-2026";
   const group = i % 2 === 0 ? "A" : "B";
-  const weekLogged = weekPattern(id, i);
-  const loggedToday =
-    weekLogged[weekLogged.length - 1] ?? hash01(`${id}-today`) > 0.35;
+  const weekCheckedIn = weekPattern(id, i);
+  const checkedInToday =
+    weekCheckedIn[weekCheckedIn.length - 1] ?? hash01(`${id}-today`) > 0.35;
   const contextualMetToday =
-    loggedToday && hash01(`${id}-ctx`) > (group === "A" ? 0.4 : 0.45);
+    checkedInToday && hash01(`${id}-ctx`) > (group === "A" ? 0.4 : 0.45);
   return {
     id,
     name,
     batchId,
     group,
-    loggedToday,
-    weekLogged: weekLogged.map((v, j) => (j === 6 ? loggedToday : v)),
+    checkedInToday,
+    weekCheckedIn: weekCheckedIn.map((v, j) => (j === 6 ? checkedInToday : v)),
     contextualMetToday,
   };
 });
@@ -93,7 +93,7 @@ export function filterStudents(batchId: string, group: GroupId): Student[] {
 }
 
 /**
- * Recomputes week log indicators and today's status for a selected week.
+ * Recomputes per-day check-in flags and today's status for a selected week.
  * This keeps the dashboard interactive when coaches switch week context.
  */
 export function projectStudentsForWeek(
@@ -102,20 +102,20 @@ export function projectStudentsForWeek(
 ): Student[] {
   const safeWeek = Math.min(12, Math.max(1, week));
   return students.map((s, i) => {
-    const weekLogged = Array.from({ length: 7 }, (_, day) => {
+    const weekCheckedIn = Array.from({ length: 7 }, (_, day) => {
       const r = hash01(`${s.id}-w${safeWeek}-d${day}`);
       return r > 0.3;
     });
-    const loggedToday = weekLogged[6] ?? false;
+    const checkedInToday = weekCheckedIn[6] ?? false;
     const contextualThreshold = s.group === "A" ? 0.42 : 0.47;
     const contextualMetToday =
-      loggedToday &&
+      checkedInToday &&
       hash01(`${s.id}-ctx-w${safeWeek}-${i}`) > contextualThreshold;
 
     return {
       ...s,
-      loggedToday,
-      weekLogged,
+      checkedInToday,
+      weekCheckedIn,
       contextualMetToday,
     };
   });

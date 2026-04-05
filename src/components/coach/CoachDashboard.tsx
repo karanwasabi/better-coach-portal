@@ -16,8 +16,8 @@ import {
 } from "@/lib/coach/week-phase";
 import type { GroupId } from "@/lib/coach/types";
 import {
-  percentContextualAmongLogged,
-  percentLoggedToday,
+  percentContextualAmongCheckedIn,
+  percentCheckedInToday,
 } from "@/lib/coach/metrics";
 import { EngagementTrendChart } from "./EngagementTrendChart";
 import { RosterTable } from "./RosterTable";
@@ -127,8 +127,8 @@ export function CoachDashboard() {
   );
 
   const total = students.length;
-  const logRate = percentLoggedToday(students);
-  const contextualRate = percentContextualAmongLogged(students);
+  const checkInRate = percentCheckedInToday(students);
+  const contextualRate = percentContextualAmongCheckedIn(students);
   const trend = useMemo(
     () => engagementTrend(batchId, group, viewingWeek, batch.startMonday),
     [batchId, group, viewingWeek, batch.startMonday],
@@ -224,10 +224,10 @@ export function CoachDashboard() {
             accentClass="from-[#5C65CF] via-[#6A71E6] to-[#4750C2] border-[#4149AA]"
           />
           <KpiCard
-            label="Tonight's log rate"
-            value={logRate}
+            label="Tonight's check-in rate"
+            value={checkInRate}
             suffix="%"
-            hint="Members who logged their effort today"
+            hint="Members who completed their daily check-in today"
             accentClass="from-[#FF9F1C] via-[#FFB347] to-[#E88A0C] border-[#C2740E]"
           />
           <KpiCard
@@ -241,7 +241,7 @@ export function CoachDashboard() {
 
         <EngagementTrendChart
           data={trend}
-          subtitle={`Daily log rate · ${dateRangeLabel}`}
+          subtitle={`Daily check-in rate · ${dateRangeLabel}`}
         />
 
         <RosterTable students={students} />

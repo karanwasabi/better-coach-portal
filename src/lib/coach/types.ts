@@ -14,9 +14,9 @@ export interface Student {
   name: string;
   batchId: string;
   group: GroupId;
-  loggedToday: boolean;
+  checkedInToday: boolean;
   /** Index 0 = Monday … 6 = Sunday for the roster row */
-  weekLogged: boolean[];
+  weekCheckedIn: boolean[];
   /** Used when contextual tile is action / habit / challenge */
   contextualMetToday: boolean;
 }

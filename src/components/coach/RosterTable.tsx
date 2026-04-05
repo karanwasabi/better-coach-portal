@@ -49,16 +49,16 @@ export function RosterTable({ students }: { students: Student[] }) {
                       <div
                         key={`${s.id}-${i}`}
                         className="flex h-9 w-9 flex-col items-center justify-center rounded-xl border border-slate-100 bg-white shadow-sm"
-                        title={`${d} ${s.weekLogged[i] ? "logged" : "missed"}`}
+                        title={`${d} ${s.weekCheckedIn[i] ? "checked in" : "missed"}`}
                       >
                         <span className="text-[9px] font-bold text-slate-400">
                           {d}
                         </span>
-                        {s.weekLogged[i] ? (
+                        {s.weekCheckedIn[i] ? (
                           <Check
                             className="h-3.5 w-3.5 text-emerald-500"
                             strokeWidth={3}
-                            aria-label="Logged"
+                            aria-label="Checked in"
                           />
                         ) : (
                           <Minus
